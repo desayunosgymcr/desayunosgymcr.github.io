@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Sabores de Tati · Pedidos</title>
+<meta name="description" content="Identificate, elegí lo tuyo y pagá con un Sinpe a Tati. Cada persona hace su propio pedido.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FFF7EE;--surface:#FFFFFF;--ink:#2A1A12;--ink-2:#7A5B49;--ink-3:#B39C8C;
+  --line:#F1E4D6;--line-2:#E7D5C3;
+  --orange:#F4623A;--orange-d:#D9491F;--amber:#F79A22;--yellow:#FFC93C;
+  --coral:#FF7E5F;--berry:#E8467C;--grape:#8A5CF6;
+  --green:#12A56A;--green-d:#0E8656;
+  --cream-soft:#FFF0DF;
+  --r:22px;--r-sm:14px;--r-xs:10px;--tr:.22s ease;
+  --shadow:0 2px 4px rgba(146,64,14,.05),0 12px 30px rgba(146,64,14,.08);
+  --shadow-lg:0 18px 60px rgba(146,64,14,.20);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;overflow-x:hidden}
+h1,h2,h3{font-family:'Fraunces',serif;letter-spacing:-.01em}
+.mono{font-family:'Space Grotesk',sans-serif}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+::selection{background:var(--orange);color:#fff}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px;background:rgba(255,247,238,.85);backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font-family:'Fraunces';font-weight:700;font-size:1.15rem}
+.brand .mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--amber));
+  color:#fff;display:grid;place-items:center;font-size:1.15rem;box-shadow:0 6px 16px rgba(244,98,58,.4)}
+.brand small{display:block;font-family:'Inter';font-weight:500;font-size:.7rem;color:var(--ink-3);letter-spacing:0;margin-top:-3px}
+.nav-total{display:flex;align-items:center;gap:9px;background:var(--ink);color:#fff;
+  padding:8px 15px;border-radius:50px;font-weight:600;font-size:.9rem;box-shadow:0 6px 18px rgba(42,26,18,.25)}
+.nav-total .dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 3px rgba(255,201,60,.25)}
+.nav-total b{font-family:'Space Grotesk';font-weight:700}
+
+/* LAYOUT */
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+section{padding:30px 0}
+
+/* HERO */
+.hero{position:relative;padding:56px 0 34px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(1200px 500px at 15% -10%,rgba(255,201,60,.35),transparent 60%),
+             radial-gradient(900px 500px at 100% 0%,rgba(244,98,58,.22),transparent 55%),
+             radial-gradient(700px 500px at 60% 120%,rgba(138,92,246,.10),transparent 60%)}
+.blob{position:absolute;font-size:clamp(2rem,7vw,3.6rem);opacity:.9;animation:bob 6s ease-in-out infinite;filter:drop-shadow(0 8px 14px rgba(146,64,14,.18))}
+.blob.b1{top:16%;right:8%;animation-delay:.2s}
+.blob.b2{top:52%;right:20%;animation-delay:1.1s;font-size:clamp(1.6rem,5vw,2.6rem)}
+.blob.b3{top:74%;right:4%;animation-delay:.6s}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+.chip{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--orange-d);border:1px solid var(--line-2);
+  font-size:.76rem;font-weight:700;padding:7px 14px;border-radius:50px;letter-spacing:.02em;margin-bottom:20px;box-shadow:var(--shadow)}
+.chip .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(18,165,106,.5);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(18,165,106,.5)}70%{box-shadow:0 0 0 8px rgba(18,165,106,0)}100%{box-shadow:0 0 0 0 rgba(18,165,106,0)}}
+.hero h1{font-size:clamp(2.4rem,7vw,4rem);line-height:1.02;font-weight:700;max-width:14ch}
+.hero h1 em{font-style:italic;color:var(--orange)}
+.hero p{color:var(--ink-2);font-size:1.08rem;max-width:50ch;margin-top:18px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.steps{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.step{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);
+  border-radius:50px;padding:8px 16px 8px 8px;font-size:.85rem;font-weight:600;color:var(--ink-2);box-shadow:var(--shadow)}
+.step i{width:27px;height:27px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--amber));color:#fff;
+  display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;font-size:.82rem;font-style:normal}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:.94rem;
+  padding:14px 24px;border-radius:50px;transition:transform var(--tr),box-shadow var(--tr),background var(--tr);white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange-d));color:#fff;box-shadow:0 10px 24px rgba(244,98,58,.35)}
+.btn-primary:hover{box-shadow:0 14px 30px rgba(244,98,58,.5);transform:translateY(-2px)}
+.btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line-2)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange-d)}
+.btn-green{background:linear-gradient(135deg,#16BE7C,var(--green-d));color:#fff;box-shadow:0 10px 24px rgba(18,165,106,.34)}
+.btn-green:hover{box-shadow:0 14px 30px rgba(18,165,106,.5);transform:translateY(-2px)}
+.btn-block{width:100%}
+
+/* SECTION HEADERS */
+.sec-head{margin-bottom:22px}
+.sec-head h2{font-size:1.8rem;font-weight:700}
+.sec-head p{color:var(--ink-2);font-size:.95rem;margin-top:4px}
+.lbl{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--orange-d);background:var(--cream-soft);padding:5px 12px;border-radius:50px;margin-bottom:10px}
+
+/* IDENTIFY */
+#pedido{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:8px}
+.ident{display:flex;align-items:center;gap:13px}
+.ident .p-av{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--grape),var(--berry));
+  color:#fff;display:grid;place-items:center;font-family:'Space Grotesk';font-weight:700;font-size:1.2rem;flex:none;
+  box-shadow:0 8px 18px rgba(138,92,246,.35);transition:transform var(--tr)}
+.ident .p-av.empty{background:var(--cream-soft);color:var(--ink-3);box-shadow:none}
+.ident .lab{flex:1;min-width:0}
+.ident .lab span{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.ident input{width:100%;padding:12px 15px;border:1.5px solid var(--line-2);border-radius:var(--r-sm);
+  font-size:1rem;font-family:inherit;background:var(--bg);transition:border var(--tr),background var(--tr)}
+.ident input:focus{outline:none;border-color:var(--orange);background:#fff}
+
+/* MENU / ORDER CARDS */
+.cat{margin-bottom:24px}
+.cat-title{display:flex;align-items:center;gap:10px;font-family:'Fraunces';font-weight:600;font-size:1.35rem;margin-bottom:14px}
+.cat-title .em{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:1.15rem;background:var(--cream-soft)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-sm);overflow:hidden;
+  transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr);position:relative;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.card.active{border-color:var(--orange);box-shadow:0 10px 28px rgba(244,98,58,.20)}
+.card-img{aspect-ratio:16/10;position:relative;overflow:hidden;display:grid;place-items:center}
+.card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card-img .em{font-size:clamp(2.6rem,8vw,3.6rem);filter:drop-shadow(0 6px 10px rgba(146,64,14,.2));transition:transform var(--tr)}
+.card:hover .card-img .em{transform:scale(1.12) rotate(-5deg)}
+.g0{background:linear-gradient(135deg,#FFE29A,#FFB25A)}
+.g1{background:linear-gradient(135deg,#FFC1A1,#FF8A6B)}
+.g2{background:linear-gradient(135deg,#FFD89B,#F7A24B)}
+.g3{background:linear-gradient(135deg,#C7F0D8,#7FD8A6)}
+.g4{background:linear-gradient(135deg,#FFE0A3,#FFC24C)}
+.g5{background:linear-gradient(135deg,#E7D6FF,#B79BFF)}
+.g6{background:linear-gradient(135deg,#FFCEDD,#FF8FB2)}
+.qbadge{position:absolute;top:9px;right:9px;min-width:26px;height:26px;padding:0 7px;border-radius:50px;
+  background:var(--orange);color:#fff;font-family:'Space Grotesk';font-weight:700;font-size:.85rem;display:none;
+  align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(244,98,58,.5)}
+.card.active .qbadge{display:flex}
+.card-body{padding:13px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.card-name{font-weight:700;font-size:1rem;line-height:1.25}
+.card-price{font-family:'Space Grotesk';font-weight:700;font-size:1.15rem;color:var(--orange-d)}
+.card-foot{margin-top:auto;padding-top:10px}
+.add-btn{width:100%;padding:11px;border-radius:50px;background:var(--ink);color:#fff;font-weight:700;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:background var(--tr)}
+.add-btn:hover{background:#000}
+.stepper{display:flex;align-items:center;justify-content:space-between;background:var(--cream-soft);border-radius:50px;padding:4px}
+.stepper button{width:36px;height:36px;border-radius:50%;background:#fff;font-size:1.25rem;font-weight:700;color:var(--orange-d);
+  display:grid;place-items:center;transition:transform var(--tr),box-shadow var(--tr);box-shadow:0 2px 6px rgba(146,64,14,.12)}
+.stepper button:hover{transform:scale(1.08)}
+.stepper .qty{font-family:'Space Grotesk';font-weight:700;font-size:1.05rem}
+
+/* SUMMARY BAR */
+.summary{position:sticky;bottom:14px;z-index:40;margin-top:22px;background:var(--ink);color:#fff;
+  border-radius:var(--r);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  box-shadow:0 16px 40px rgba(42,26,18,.35);flex-wrap:wrap}
+.summary .s-tot small{display:block;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.summary .s-tot b{font-family:'Space Grotesk';font-size:1.75rem;font-weight:700}
+.summary .s-meta{font-size:.8rem;color:rgba(255,255,255,.6);margin-right:auto;margin-left:4px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(42,26,18,.5);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;justify-content:center;padding:0}
+.overlay.open{display:flex}
+.modal{background:var(--surface);width:100%;max-width:560px;max-height:92vh;overflow-y:auto;
+  border-radius:26px 26px 0 0;padding:24px 22px 30px;animation:slideUp .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes slideUp{from{transform:translateY(34px);opacity:.4}to{transform:translateY(0);opacity:1}}
+.modal-grab{width:44px;height:5px;border-radius:5px;background:var(--line-2);margin:0 auto 18px}
+.modal h3{font-size:1.55rem;font-weight:700}
+.modal .sub{color:var(--ink-2);font-size:.92rem;margin-top:4px;margin-bottom:18px}
+.recap{border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;margin-bottom:18px}
+.recap-p{padding:13px 15px;border-bottom:1px solid var(--line)}
+.recap-p .rh{display:flex;justify-content:space-between;font-weight:700;font-size:.94rem}
+.recap-p .rh b{font-family:'Space Grotesk'}
+.recap-p .ri{font-size:.83rem;color:var(--ink-2);margin-top:4px}
+.recap-total{display:flex;justify-content:space-between;align-items:center;padding:15px;background:var(--cream-soft);font-weight:700}
+.recap-total b{font-family:'Space Grotesk';font-size:1.4rem;color:var(--orange-d)}
+
+/* SINPE CARD */
+.sinpe{background:linear-gradient(140deg,#241610,#3A2418 60%,#4A2A15);color:#fff;border-radius:var(--r);padding:22px;margin-bottom:16px;position:relative;overflow:hidden}
+.sinpe::after{content:"💸";position:absolute;right:-6px;bottom:-14px;font-size:6rem;opacity:.10}
+.sinpe .st{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.sinpe .samt{font-family:'Space Grotesk';font-size:2.4rem;font-weight:700;margin:8px 0 16px;color:var(--yellow)}
+.sinpe-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid rgba(255,255,255,.14);position:relative;z-index:1}
+.sinpe-row .k{font-size:.8rem;color:rgba(255,255,255,.6)}
+.sinpe-row .v{font-family:'Space Grotesk';font-weight:600;font-size:1.08rem;display:flex;align-items:center;gap:9px}
+.copy{background:rgba(255,255,255,.14);border-radius:8px;padding:6px 11px;font-size:.75rem;font-weight:700;color:#fff;transition:background var(--tr)}
+.copy:hover{background:rgba(255,255,255,.28)}
+.sinpe-hint{font-size:.83rem;color:var(--ink-2);text-align:center;margin-bottom:16px;line-height:1.6}
+.sinpe-hint b{color:var(--ink)}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:6px}
+.field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:var(--r-sm);
+  font-size:.92rem;font-family:inherit;background:var(--bg);resize:vertical}
+.field textarea:focus{outline:none;border-color:var(--orange);background:#fff}
+.modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.fs-note{font-size:.76rem;color:var(--ink-3);text-align:center;margin-top:6px;line-height:1.5}
+
+/* TOAST */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);z-index:200;
+  background:var(--ink);color:#fff;padding:13px 22px;border-radius:50px;font-size:.88rem;font-weight:600;
+  box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* FOOTER */
+footer{padding:38px 0 70px;text-align:center;color:var(--ink-3);font-size:.82rem}
+footer b{color:var(--ink-2)}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  section{padding:24px 0}
+  .hero{padding:36px 0 22px}
+  .wrap{padding:0 16px}
+  #pedido{padding:16px}
+  .nav{padding:11px 16px}
+  .brand small{display:none}
+  .cards{grid-template-columns:1fr 1fr;gap:12px}
+  .summary{padding:14px 16px;bottom:10px}
+  .summary .s-tot b{font-size:1.5rem}
+  .modal{max-width:100%}
+}
+@media(min-width:641px){
+  .overlay{align-items:center;padding:24px}
+  .modal{border-radius:26px}
+}
+@media(max-width:360px){ .cards{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="#" style="color:inherit">
+    <span class="mark" id="brandMark">🥟</span>
+    <span id="brandName">Sabores de Tati<small id="brandTag">Desayunos caseros</small></span>
+  </a>
+  <div class="nav-total" title="Mi total">
+    <span class="dot"></span>
+    <span>Mi total <b id="navTotal">₡0</b></span>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <span class="blob b1">🥟</span><span class="blob b2">🥞</span><span class="blob b3">🍳</span>
+  <div class="wrap">
+    <span class="chip"><span class="pulse"></span> Tu pedido, a tu nombre</span>
+    <h1 id="heroTitle">Identificate y pedí <em>lo tuyo.</em></h1>
+    <p id="heroSub">Cada persona abre el link, elige lo suyo y hace su propio Sinpe a Tati. Sin enredos ni administradores.</p>
+    <div class="hero-actions">
+      <a href="#pedido" class="btn btn-primary">Hacer mi pedido →</a>
+      <a href="#menu" class="btn btn-ghost">Ver el menú</a>
+    </div>
+    <div class="steps">
+      <div class="step"><i>1</i> Escribí tu nombre</div>
+      <div class="step"><i>2</i> Elegí del menú</div>
+      <div class="step"><i>3</i> Sinpe a Tati</div>
+    </div>
+  </div>
+</header>
+
+<section id="pedido-sec" class="wrap">
+  <div class="sec-head">
+    <span class="lbl">👋 Empezá aquí</span>
+    <h2>¿Quién sos?</h2>
+    <p>Poné tu nombre para que Tati sepa de quién es el pedido.</p>
+  </div>
+  <div id="pedido">
+    <div class="ident">
+      <div class="p-av empty" id="avatar">?</div>
+      <div class="lab">
+        <span>Tu nombre</span>
+        <input id="nameInput" type="text" placeholder="Ej: Cami" maxlength="24" autocomplete="name" oninput="onName()">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="wrap">
+  <div class="sec-head">
+    <span class="lbl">🍽️ El menú de hoy</span>
+    <h2>Elegí lo tuyo</h2>
+    <p>Tocá <b>Agregar</b> y ajustá la cantidad. Tu total se calcula solo.</p>
+  </div>
+  <div id="menuList"></div>
+
+  <div class="summary">
+    <div class="s-tot">
+      <small>Mi total</small>
+      <b id="grandTotal">₡0</b>
+    </div>
+    <div class="s-meta" id="summaryMeta">0 ítems</div>
+    <button class="btn btn-green" id="finishBtn" onclick="openCheckout()">Finalizar y pagar →</button>
+  </div>
+</section>
+
+<footer class="wrap">
+  Cada quien pide por su cuenta · Pago por <b>Sinpe a Tati</b><br>
+  <span id="footNote"></span>
+</footer>
+
+<!-- CHECKOUT MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-grab"></div>
+    <h3 id="modalTitle">Tu pedido</h3>
+    <p class="sub">Revisá lo tuyo y hacé el Sinpe a Tati por este monto. Con eso queda listo.</p>
+
+    <div class="sinpe">
+      <div class="st">Sinpe Móvil a</div>
+      <div class="samt" id="sinpeAmount">₡0</div>
+      <div class="sinpe-row">
+        <span class="k">Nombre</span>
+        <span class="v" id="sinpeName">Tati</span>
+      </div>
+      <div class="sinpe-row">
+        <span class="k">Teléfono</span>
+        <span class="v"><span id="sinpePhone">8877-2700</span>
+          <button class="copy" onclick="copyPhone()">Copiar</button></span>
+      </div>
+    </div>
+
+    <p class="sinpe-hint">Abrí tu app del banco, hacé un <b>Sinpe Móvil</b> por el monto de arriba al número de <b id="hintName">Tati</b>. Poné de detalle tu nombre: <b id="hintYou">—</b>.</p>
+
+    <div id="recapBox" class="recap"></div>
+
+    <div class="field">
+      <label for="notaInput">Nota para Tati (opcional)</label>
+      <textarea id="notaInput" rows="2" placeholder="Ej: sin natilla, entregar 8am, etc."></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-green btn-block" id="waBtn" onclick="sendWhatsApp()">📲 Enviar mi pedido a Tati por WhatsApp</button>
+      <button class="btn btn-ghost btn-block" id="sendBtn" onclick="sendOrder()">✉️ Enviar por correo</button>
+      <button class="btn btn-ghost btn-block" onclick="closeCheckout()">Seguir editando</button>
+    </div>
+    <p class="fs-note" id="fsNote"></p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Fallback data (para abrir el archivo localmente sin servidor) ---------- */
+const FALLBACK = {
+  business:{name:"Sabores de Tati",tagline:"Desayunos caseros",
+    heroTitle:"Identificate y pedí lo tuyo.",
+    heroSub:"Cada persona abre el link, elige lo suyo y hace su propio Sinpe a Tati. Sin enredos ni administradores."},
+  sinpe:{name:"Tati",phone:"88772700",phoneDisplay:"8877-2700",whatsapp:"50688772700"},
+  formspree:{id:""},
+  currency:"₡",
+  categories:[
+    {id:"empanadas",name:"Empanadas",emoji:"🥟",items:[
+      {id:"emp_queso",name:"Empanada de Queso",price:1000,emoji:"🧀",img:""},
+      {id:"emp_frijoles",name:"Empanada de Frijoles",price:1000,emoji:"🫘",img:""},
+      {id:"emp_gallopinto",name:"Empanada de Gallo Pinto",price:1000,emoji:"🍚",img:""}]},
+    {id:"platillos",name:"Platillos",emoji:"🍳",items:[
+      {id:"pinto",name:"Gallo Pinto",price:3000,emoji:"🍛",img:""},
+      {id:"omelet",name:"Omelet",price:2500,emoji:"🍳",img:""},
+      {id:"tortilla",name:"Tortilla",price:1000,emoji:"🫓",img:""},
+      {id:"pancakes",name:"Pancakes",price:3000,emoji:"🥞",img:""}]}
+  ]
+};
+
+let DATA = FALLBACK;
+let ITEMS = [];
+let me = { name:"", orders:{} };
+
+async function boot(){
+  try{
+    const res = await fetch("./data.json?nocache="+Date.now(),{cache:"no-store"});
+    if(res.ok) DATA = await res.json();
+  }catch(e){ /* usa FALLBACK */ }
+  ITEMS = DATA.categories.flatMap(c=>c.items);
+  renderStatic();
+  renderMenu();
+  refreshTotals();
+}
+
+function money(n){ return (DATA.currency||"₡") + Number(n||0).toLocaleString("es-CR"); }
+
+function renderStatic(){
+  const b=DATA.business||{}, s=DATA.sinpe||{};
+  document.getElementById("brandName").firstChild.textContent = b.name || "Pedidos";
+  document.getElementById("brandTag").textContent = b.tagline || "";
+  document.getElementById("brandMark").textContent = (DATA.categories[0]&&DATA.categories[0].emoji) || "🍽️";
+  document.getElementById("sinpeName").textContent = s.name || "Tati";
+  document.getElementById("hintName").textContent = s.name || "Tati";
+  document.getElementById("sinpePhone").textContent = s.phoneDisplay || s.phone || "";
+  document.title = (b.name||"Pedidos") + " · Pedidos";
+  document.getElementById("footNote").textContent = "Sinpe Móvil a " + (s.name||"Tati") + " · " + (s.phoneDisplay||s.phone||"");
+  const fsNote=document.getElementById("fsNote");
+  fsNote.textContent = (DATA.formspree&&DATA.formspree.id)
+    ? "WhatsApp abre el chat con Tati listo para enviar · el correo le llega automáticamente."
+    : "WhatsApp ya funciona. El envío por correo necesita el ID de Formspree en data.json.";
+}
+
+let gi=0;
+function renderMenu(){
+  gi=0;
+  const host=document.getElementById("menuList");
+  host.innerHTML = DATA.categories.map(cat=>`
+    <div class="cat">
+      <div class="cat-title"><span class="em">${cat.emoji||"🍴"}</span> ${cat.name}</div>
+      <div class="cards">
+        ${cat.items.map(it=>cardHtml(it)).join("")}
+      </div>
+    </div>`).join("");
+}
+
+function cardHtml(it){
+  const g = "g"+((gi++)%7);
+  const imgHtml = it.img ? `<img src="${it.img}" alt="${escapeHtml(it.name)}" loading="lazy">`
+                         : `<span class="em">${it.emoji||"🍽️"}</span>`;
+  return `<div class="card" id="card-${it.id}">
+    <div class="card-img ${it.img?'':g}">
+      ${imgHtml}
+      <span class="qbadge" id="qb-${it.id}">0</span>
+    </div>
+    <div class="card-body">
+      <div class="card-name">${it.name}</div>
+      <div class="card-price">${money(it.price)}</div>
+      <div class="card-foot" id="foot-${it.id}"></div>
+    </div>
+  </div>`;
+}
+
+function footHtml(it){
+  const q=me.orders[it.id]||0;
+  if(q<=0) return `<button class="add-btn" onclick="change('${it.id}',1)">+ Agregar</button>`;
+  return `<div class="stepper">
+    <button onclick="change('${it.id}',-1)">−</button>
+    <span class="qty">${q}</span>
+    <button onclick="change('${it.id}',1)">+</button>
+  </div>`;
+}
+
+/* ---------- Identificación ---------- */
+function initials(name){ const n=name.trim(); return n?n.slice(0,2).toUpperCase():"?"; }
+function onName(){
+  me.name = document.getElementById("nameInput").value;
+  const av=document.getElementById("avatar");
+  av.textContent = initials(me.name);
+  av.classList.toggle("empty", !me.name.trim());
+}
+
+/* ---------- Pedido ---------- */
+function change(itemId,delta){
+  const cur=me.orders[itemId]||0;
+  const next=Math.max(0,cur+delta);
+  if(next===0) delete me.orders[itemId]; else me.orders[itemId]=next;
+  updateCard(itemId);
+  refreshTotals();
+}
+function updateCard(itemId){
+  const it=ITEMS.find(i=>i.id===itemId);
+  const q=me.orders[itemId]||0;
+  const foot=document.getElementById("foot-"+itemId);
+  if(foot) foot.innerHTML=footHtml(it);
+  const card=document.getElementById("card-"+itemId);
+  if(card) card.classList.toggle("active", q>0);
+  const qb=document.getElementById("qb-"+itemId);
+  if(qb) qb.textContent=q;
+}
+function myTotal(){
+  return Object.entries(me.orders).reduce((s,[id,q])=>{
+    const it=ITEMS.find(i=>i.id===id); return s + (it?it.price*q:0);
+  },0);
+}
+function myCount(){ return Object.values(me.orders).reduce((s,q)=>s+q,0); }
+
+function refreshTotals(){
+  // asegura footers de todos los items (primer render)
+  ITEMS.forEach(it=>{ const f=document.getElementById("foot-"+it.id); if(f && !f.innerHTML) f.innerHTML=footHtml(it); });
+  const gt=myTotal();
+  document.getElementById("grandTotal").textContent=money(gt);
+  document.getElementById("navTotal").textContent=money(gt);
+  document.getElementById("summaryMeta").textContent=`${myCount()} ítem${myCount()===1?'':'s'}`;
+  document.getElementById("finishBtn").style.opacity = gt>0?1:.55;
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ---------- Checkout ---------- */
+function openCheckout(){
+  if(myCount()<=0){ toast("Elegí al menos un ítem 🙂"); document.getElementById("menu").scrollIntoView({behavior:"smooth"}); return; }
+  if(!me.name.trim()){ toast("Escribí tu nombre primero"); document.getElementById("pedido-sec").scrollIntoView({behavior:"smooth"}); setTimeout(()=>document.getElementById("nameInput").focus(),400); return; }
+  document.getElementById("modalTitle").textContent = "Pedido de " + me.name.trim();
+  document.getElementById("hintYou").textContent = me.name.trim();
+  document.getElementById("recapBox").innerHTML = `
+    <div class="recap-p">
+      <div class="rh"><span>${escapeHtml(me.name)}</span><b>${money(myTotal())}</b></div>
+      <div class="ri">${Object.entries(me.orders).map(([id,q])=>{
+        const it=ITEMS.find(i=>i.id===id); return `${q}× ${it?it.name:id}`;
+      }).join(" · ")}</div>
+    </div>
+    <div class="recap-total"><span>Total a pagar</span><b>${money(myTotal())}</b></div>`;
+  document.getElementById("sinpeAmount").textContent=money(myTotal());
+  document.getElementById("overlay").classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeCheckout(){
+  document.getElementById("overlay").classList.remove("open");
+  document.body.style.overflow="";
+}
+document.getElementById("overlay").addEventListener("click",e=>{ if(e.target.id==="overlay") closeCheckout(); });
+
+function copyPhone(){
+  const ph=(DATA.sinpe&&DATA.sinpe.phone)||"88772700";
+  navigator.clipboard?.writeText(ph).then(()=>toast("Número copiado: "+ph),()=>toast("Número: "+ph));
+}
+
+function orderText(){
+  const s=DATA.sinpe||{};
+  let t=`🧾 PEDIDO — ${DATA.business.name}\n`;
+  t+=`Persona: ${me.name.trim()}\n\n`;
+  Object.entries(me.orders).forEach(([id,q])=>{
+    const it=ITEMS.find(i=>i.id===id); t+=`  ${q}× ${it?it.name:id} — ${money((it?it.price:0)*q)}\n`;
+  });
+  const nota=(document.getElementById("notaInput").value||"").trim();
+  if(nota) t+=`\nNota: ${nota}\n`;
+  t+=`\nTOTAL: ${money(myTotal())}\nPago: Sinpe Móvil a ${s.name} (${s.phoneDisplay||s.phone})`;
+  return t;
+}
+
+function sendWhatsApp(){
+  const wa=(DATA.sinpe&&DATA.sinpe.whatsapp)?String(DATA.sinpe.whatsapp).replace(/\D/g,""):"";
+  const txt=orderText();
+  if(wa){
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(txt)}`,"_blank");
+    toast("Abriendo WhatsApp… solo tocá enviar 📲");
+  }else{
+    navigator.clipboard?.writeText(txt).then(
+      ()=>toast("Pedido copiado. Pegalo en tu chat con Tati ✅"),
+      ()=>toast("No se pudo abrir WhatsApp"));
+  }
+}
+
+async function sendOrder(){
+  const fsId = DATA.formspree && DATA.formspree.id ? DATA.formspree.id.trim() : "";
+  const btn=document.getElementById("sendBtn");
+  if(!fsId){
+    const txt=orderText();
+    try{ await navigator.clipboard.writeText(txt); toast("Copiado. Configurá Formspree para correo, o usá WhatsApp ✅"); }
+    catch(e){ toast("Configurá Formspree en data.json o usá el botón de WhatsApp"); }
+    return;
+  }
+  btn.textContent="Enviando…"; btn.disabled=true;
+  try{
+    const res=await fetch(`https://formspree.io/f/${fsId}`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({
+        _subject:`Pedido de ${me.name.trim()} — ${money(myTotal())}`,
+        persona:me.name.trim(),
+        negocio:DATA.business.name,
+        total:money(myTotal()),
+        pago:`Sinpe a ${DATA.sinpe.name} (${DATA.sinpe.phoneDisplay||DATA.sinpe.phone})`,
+        nota:(document.getElementById("notaInput").value||"").trim(),
+        pedido:orderText()
+      })
+    });
+    if(res.ok){ btn.textContent="¡Enviado! ✓"; toast("Pedido enviado a Tati por correo ✅");
+      setTimeout(()=>{ closeCheckout(); btn.textContent="✉️ Enviar por correo"; btn.disabled=false; },1400); }
+    else throw new Error("fail");
+  }catch(e){
+    btn.textContent="✉️ Enviar por correo"; btn.disabled=false;
+    toast("No se pudo enviar. Revisá el ID de Formspree");
+  }
+}
+
+let toastT;
+function toast(msg){
+  const el=document.getElementById("toast");
+  el.textContent=msg; el.classList.add("show");
+  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2600);
+}
+
+boot();
+</script>
+</body>
+</html>

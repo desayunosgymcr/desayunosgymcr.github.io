@@ -1,0 +1,43 @@
+{
+  "business": {
+    "name": "Desayunos Deliciosos",
+    "tagline": "Desayunos caseros",
+    "heroTitle": "Identificate y pedí lo tuyo.",
+    "heroSub": "Cada persona abre el link, elige lo suyo y hace su propio Sinpe a Tati. Sin enredos ni administradores.",
+    "aboutText": "Empanadas recién hechas y desayunos típicos preparados con cariño."
+  },
+  "sinpe": {
+    "name": "Tati",
+    "phone": "88772700",
+    "phoneDisplay": "8877-2700",
+    "whatsapp": "50688772700"
+  },
+  "formspree": {
+    "id": "",
+    "note": "Cree un formulario en formspree.io y pegue aqui el ID (ej: xpwznjpq) para recibir los pedidos por correo."
+  },
+  "currency": "₡",
+  "categories": [
+    {
+      "id": "empanadas",
+      "name": "Empanadas",
+      "emoji": "🥟",
+      "items": [
+        { "id": "emp_queso",      "name": "Empanada de Queso",       "price": 1000, "emoji": "🧀", "img": "" },
+        { "id": "emp_frijoles",   "name": "Empanada de Frijoles",    "price": 1000, "emoji": "🫘", "img": "" },
+        { "id": "emp_gallopinto", "name": "Empanada de Gallo Pinto", "price": 1000, "emoji": "🍚", "img": "" }
+      ]
+    },
+    {
+      "id": "platillos",
+      "name": "Platillos",
+      "emoji": "🍳",
+      "items": [
+        { "id": "pinto",    "name": "Gallo Pinto", "price": 3000, "emoji": "🍛", "img": "" },
+        { "id": "omelet",   "name": "Omelet",      "price": 2500, "emoji": "🍳", "img": "" },
+        { "id": "tortilla", "name": "Tortilla",    "price": 1000, "emoji": "🫓", "img": "" },
+        { "id": "pancakes", "name": "Pancakes",    "price": 3000, "emoji": "🥞", "img": "" }
+      ]
+    }
+  ]
+}

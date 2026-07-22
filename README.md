@@ -1,4 +1,4 @@
-# Sabores de Tati — Página de pedidos
+# Sabores y Desayunos deliciosos — Página de pedidos
 
 Página web de una sola carpeta: todo el contenido vive en `data.json` y el diseño en `index.html`.
 Es estática (sin servidor), responsive (celular, tablet, compu) y lista para **GitHub Pages**.

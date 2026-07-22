@@ -11,10 +11,10 @@
 // (WhatsApp, correo y guardado local), simplemente sin sincronizar a la nube.
 
 window.FIREBASE_CONFIG = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "1:000000000000:web:xxxxxxxxxxxxxxxxxxxxxx"
+  apiKey: "AIzaSyDweRetKgRCPS5NNEixZd5Y6dVQn20baTo",
+  authDomain: "desayunos-sabrosos.firebaseapp.com",
+  projectId: "desayunos-sabrosos",
+  storageBucket: "desayunos-sabrosos.firebasestorage.app",
+  messagingSenderId: "1099483631652",
+  appId: "1:1099483631652:web:87c5a702f1dd4c524cc8b1"
 };

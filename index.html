@@ -286,7 +286,8 @@ footer b{color:var(--ink-2)}
 
 <footer class="wrap">
   Cada quien pide por su cuenta · Pago por <b>Sinpe a Tati</b><br>
-  <span id="footNote"></span>
+  <span id="footNote"></span><br>
+  <a href="./admin.html" style="color:var(--ink-3);font-size:.78rem;text-decoration:underline;margin-top:8px;display:inline-block">Panel de Tati</a>
 </footer>
 
 <!-- CHECKOUT MODAL -->
@@ -500,6 +501,29 @@ function copyPhone(){
   navigator.clipboard?.writeText(ph).then(()=>toast("Número copiado: "+ph),()=>toast("Número: "+ph));
 }
 
+/* Guarda el pedido finalizado en este dispositivo (lo lee admin.html) */
+function recordOrder(via){
+  try{
+    const rec={
+      id:"p_"+Date.now()+"_"+Math.random().toString(36).slice(2,6),
+      fecha:new Date().toISOString(),
+      fechaTexto:new Date().toLocaleString("es-CR"),
+      persona:me.name.trim()||"Sin nombre",
+      items:Object.entries(me.orders).map(([id,q])=>{const it=ITEMS.find(i=>i.id===id);return{name:it?it.name:id,qty:q,price:it?it.price:0,subtotal:(it?it.price:0)*q};}),
+      total:myTotal(),
+      nota:(document.getElementById("notaInput").value||"").trim(),
+      via:via,
+      estado:"pendiente"
+    };
+    const key="pedidos_finalizados";
+    const arr=JSON.parse(localStorage.getItem(key)||"[]");
+    arr.push(rec); localStorage.setItem(key,JSON.stringify(arr));
+    // Si hay Firebase configurado, además lo sube a la nube para que Tati
+    // lo vea en admin.html en vivo, desde cualquier dispositivo.
+    if(window.__firebaseSaveOrder){ window.__firebaseSaveOrder(rec).catch(()=>{}); }
+  }catch(e){ /* si no hay localStorage, no pasa nada */ }
+}
+
 function orderText(){
   const s=DATA.sinpe||{};
   let t=`🧾 PEDIDO — ${DATA.business.name}\n`;
@@ -517,6 +541,7 @@ function sendWhatsApp(){
   const wa=(DATA.sinpe&&DATA.sinpe.whatsapp)?String(DATA.sinpe.whatsapp).replace(/\D/g,""):"";
   const txt=orderText();
   if(wa){
+    recordOrder("whatsapp");
     window.open(`https://wa.me/${wa}?text=${encodeURIComponent(txt)}`,"_blank");
     toast("Abriendo WhatsApp… solo tocá enviar 📲");
   }else{
@@ -550,7 +575,7 @@ async function sendOrder(){
         pedido:orderText()
       })
     });
-    if(res.ok){ btn.textContent="¡Enviado! ✓"; toast("Pedido enviado a Tati por correo ✅");
+    if(res.ok){ recordOrder("correo"); btn.textContent="¡Enviado! ✓"; toast("Pedido enviado a Tati por correo ✅");
       setTimeout(()=>{ closeCheckout(); btn.textContent="✉️ Enviar por correo"; btn.disabled=false; },1400); }
     else throw new Error("fail");
   }catch(e){
@@ -567,6 +592,26 @@ function toast(msg){
 }
 
 boot();
+</script>
+
+<!-- ====== Firebase (opcional) ======
+     Si configurás firebase-config.js, cada pedido finalizado se sube también
+     a la nube y Tati lo ve en vivo en admin.html desde cualquier celular.
+     Si no está configurado, la página sigue funcionando igual (WhatsApp/correo/local). -->
+<script src="./firebase-config.js"></script>
+<script type="module">
+  try{
+    const cfg = window.FIREBASE_CONFIG;
+    if(cfg && cfg.apiKey && !cfg.apiKey.startsWith("TU_")){
+      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      const { getFirestore, doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      const app = initializeApp(cfg);
+      const db = getFirestore(app);
+      window.__firebaseSaveOrder = async function(rec){
+        await setDoc(doc(db,"pedidos",rec.id), rec);
+      };
+    }
+  }catch(e){ console.warn("Firebase no disponible:",e.message); }
 </script>
 </body>
 </html>

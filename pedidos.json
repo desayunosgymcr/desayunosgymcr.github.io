@@ -1,0 +1,33 @@
+{
+  "_info": "Registro de pedidos finalizados. El panel (admin.html) los muestra para Tati. Cada objeto en 'pedidos' es un pedido. Podés vaciar la lista dejando: \"pedidos\": []",
+  "_formato": {
+    "id": "identificador único del pedido",
+    "fecha": "fecha/hora ISO",
+    "fechaTexto": "fecha/hora legible",
+    "persona": "nombre de quien pidió",
+    "items": [
+      { "name": "nombre del ítem", "qty": 0, "price": 0, "subtotal": 0 }
+    ],
+    "total": 0,
+    "nota": "nota opcional para Tati",
+    "via": "whatsapp | correo",
+    "estado": "pendiente | pagado | entregado"
+  },
+  "actualizado": "",
+  "pedidos": [
+    {
+      "id": "ejemplo_1",
+      "fecha": "2026-07-21T08:15:00",
+      "fechaTexto": "21/7/2026, 8:15",
+      "persona": "Cami (ejemplo)",
+      "items": [
+        { "name": "Empanada de Queso", "qty": 2, "price": 1000, "subtotal": 2000 },
+        { "name": "Omelet", "qty": 1, "price": 2500, "subtotal": 2500 }
+      ],
+      "total": 4500,
+      "nota": "Este es un pedido de ejemplo. Podés borrarlo.",
+      "via": "whatsapp",
+      "estado": "pendiente"
+    }
+  ]
+}

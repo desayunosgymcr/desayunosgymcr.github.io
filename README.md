@@ -4,10 +4,108 @@ Página web de una sola carpeta: todo el contenido vive en `data.json` y el dise
 Es estática (sin servidor), responsive (celular, tablet, compu) y lista para **GitHub Pages**.
 
 ## Archivos
-- `index.html` — el diseño y toda la lógica (menú, registro de personas, cálculo de totales, cierre con Sinpe).
-- `data.json` — el contenido: negocio, menú, precios, datos de Sinpe/WhatsApp de Tati y el ID de Formspree.
+- `index.html` — la página de pedidos (menú, identificación, totales, cierre con Sinpe).
+- `data.json` — el contenido: negocio, menú, precios, Sinpe/WhatsApp de Tati y el ID de Formspree.
+- `admin.html` — **panel de Tati** para revisar los pedidos finalizados, en vivo si conectás Firebase.
+- `pedidos.json` — registro de respaldo de pedidos (formato que también lee el panel).
+- `firebase-config.js` — credenciales de tu proyecto de Firebase (opcional, ver abajo).
 
 Para cambiar precios, nombres o agregar platillos **solo editás `data.json`** — no tocás el HTML.
+
+## Panel de administrador (admin.html)
+
+Abrí `.../admin.html` (o el enlace **"Panel de Tati"** al pie de la página). Pide un código:
+el predeterminado es **`1234`** — cambialo en `admin.html`, en la línea `const ADMIN_PIN = "1234";`.
+Es una protección básica para evitar entradas casuales, **no es seguridad real** (el archivo es público).
+
+El panel muestra los pedidos en tarjetas con totales, permite buscar por nombre, filtrar por estado
+(pendiente / pagado / entregado), y **exportar** o **importar** `pedidos.json`.
+
+### Cómo se juntan los pedidos
+
+Hay dos modos, y **conviven sin problema**:
+
+1. **Sin configurar nada** (funciona ya): cada pedido finalizado se guarda en el dispositivo de quien
+   pidió y le llega a Tati por WhatsApp/correo. El panel solo ve los pedidos hechos en ese mismo
+   celular, más los que Tati cargue a mano a `pedidos.json`.
+2. **Con Firebase conectado** (siguiente sección): todos los pedidos, sin importar desde qué celular
+   se hagan, aparecen **solos y en vivo** en `admin.html` — sin exportar ni importar nada.
+
+---
+
+## Conectar Firebase (pedidos en vivo, de todos los celulares)
+
+Esto hace que **todos los pedidos se junten automáticamente** en el panel de Tati, en tiempo real,
+sin que nadie tenga que exportar ni importar archivos. Es gratis para este volumen de uso.
+
+### 1. Crear el proyecto (una sola vez)
+
+1. Entrá a [console.firebase.google.com](https://console.firebase.google.com) con una cuenta Google
+   (podés usar `carlosmarchena@gmail.com` o la de Tati) y creá un proyecto nuevo — por ejemplo
+   `sabores-de-tati`. No hace falta activar Google Analytics.
+2. En el menú izquierdo entrá a **Build → Firestore Database** y tocá **Crear base de datos**.
+   Elegí una ubicación (cualquiera de EE.UU. está bien) y modo **producción**.
+3. Andá a **Firestore Database → Reglas** y reemplazá el contenido por esto:
+
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /pedidos/{pedidoId} {
+         // Cualquiera puede CREAR un pedido (así funciona el checkout)
+         allow create: if request.resource.data.persona is string
+                       && request.resource.data.total is number
+                       && request.resource.data.items is list;
+         // Cualquiera puede LEER (así el panel de Tati ve los pedidos)
+         allow read: if true;
+         // Solo se puede cambiar el campo "estado" (pendiente/pagado/entregado).
+         // Nadie puede editar el pedido en sí ni borrarlo desde el navegador.
+         allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado']);
+         allow delete: if false;
+       }
+     }
+   }
+   ```
+
+   Esto deja crear y leer pedidos libremente (necesario, porque no hay login de clientes), pero
+   **nadie puede editar ni borrar** un pedido ya hecho — solo marcar su estado. Guardá con **Publicar**.
+
+4. En el ícono ⚙️ (junto a "Project Overview") → **Configuración del proyecto** → bajá a
+   **"Tus apps"** → tocá el ícono `</>` (Web) → ponele un nombre (ej. "Pedidos web") → **Registrar app**.
+5. Firebase te muestra un bloque `firebaseConfig = { apiKey: "...", ... }`. Copiá esos valores.
+
+### 2. Pegar la configuración en la página
+
+Abrí `firebase-config.js` y reemplazá los valores de ejemplo por los tuyos:
+
+```js
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSy...",
+  authDomain: "sabores-de-tati.firebaseapp.com",
+  projectId: "sabores-de-tati",
+  storageBucket: "sabores-de-tati.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef1234567890"
+};
+```
+
+Subí el archivo actualizado a GitHub junto con los demás. Listo — no hay que tocar `index.html` ni
+`admin.html`, ya están conectados.
+
+> Este archivo es público (cualquiera que abra la página lo puede ver), y **eso es normal y seguro**:
+> esos valores solo identifican tu proyecto de Firebase, no dan permiso de nada por sí solos — el
+> permiso real lo controlan las Reglas de Firestore del paso 1.
+
+### 3. Probarlo
+
+- Publicá los cambios en GitHub Pages (o esperá a que se actualice sola).
+- Abrí `index.html` desde el celular, hacé un pedido de prueba y enviálo.
+- Abrí `admin.html` en otra pestaña o dispositivo: debería aparecer un badge verde **"🟢 En vivo · N
+  en la nube"** arriba a la derecha, y el pedido de prueba en la lista, sin recargar.
+
+> Nota: Firebase necesita que la página esté servida por **https** (como GitHub Pages). Si abrís
+> `index.html` localmente con doble clic (`file://`), es normal que la nube no conecte — para probar
+> local corré un mini-servidor (`python -m http.server`) o probá directo en GitHub Pages.
 
 ---
 
